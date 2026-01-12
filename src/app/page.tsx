@@ -15,6 +15,7 @@ export default function Home() {
   const [photo, setPhoto] = useState<string | null>(null);
   const [logo, setLogo] = useState<string | null>('https://www.techkoodaram.in/_next/image?url=%2Flogo.png&w=640&q=75');
   const [displayName, setDisplayName] = useState<string>('');
+  const [role, setRole] = useState<string>('');
   const [eventDetails, setEventDetails] = useState({
     eventType: 'Meetup',
     title: 'techKoodaram Meetup #1',
@@ -128,6 +129,18 @@ export default function Home() {
               />
             </div>
 
+            {/* Role Input */}
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
+              <h2 className="text-xl font-bold mb-4 text-gray-800">Role</h2>
+              <input
+                type="text"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                placeholder="E.g. Student/Developer"
+                className="w-full p-3 bg-slate-50 border border-slate-300 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+              />
+            </div>
+
             {/* Profile Photo Upload */}
             <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
               <h2 className="text-xl font-bold mb-4 text-gray-800">Profile Photo</h2>
@@ -176,7 +189,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold mb-6 text-gray-800">
               Preview
             </h2>
-            <div id="preview-image-area" className="relative flex justify-center items-center min-h-[500px] bg-primary-theme rounded-2xl">
+            <div id="preview-image-area" className="relative flex justify-center items-center min-h-[500px] bg-primary-theme">
               <div
                 ref={bannerRef}
                 className={`${currentTheme.background} overflow-hidden shadow-2xl relative`}
@@ -222,6 +235,7 @@ export default function Home() {
                   {/* Main Hero Content: Centered Title - Flex grow */}
                   <div className="w-full flex-1 flex items-center justify-center">
                     <div className="w-full max-w-4xl mx-auto px-4">
+                      <p className={`text-xs font-semibold ${currentTheme.textSecondary} uppercase tracking-wider mb-0.5`}>I am attending</p>
                       <h3
                         className={`text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-4 md:mb-6 ${currentTheme.text} line-clamp-3`}
                         style={{
@@ -261,8 +275,8 @@ export default function Home() {
                           )}
                         </div>
                         <div>
-                          <p className={`text-xs font-semibold ${currentTheme.textSecondary} uppercase tracking-wider mb-0.5`}>I am attending</p>
                           <p className={`text-lg font-bold ${currentTheme.text} leading-tight`}>{displayName || "Your Name"}</p>
+                          {role && <p className={`text-sm font-medium ${currentTheme.textSecondary} mt-0.5`}>{role}</p>}
                         </div>
                       </div>
 
@@ -289,7 +303,7 @@ export default function Home() {
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <button
                 onClick={handleDownload}
-                className="flex items-center gap-2 px-6 py-3 bg-primary-theme hover:bg-primary-theme/80 text-white font-semibold rounded-xl transition-colors shadow-lg hover:shadow-primary-theme/30"
+                className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-primary-theme hover:bg-primary-theme/80 text-white font-semibold rounded-xl transition-colors shadow-lg hover:shadow-primary-theme/30"
               >
                 <FiDownload className="text-xl" /> Download Banner
               </button>
@@ -299,7 +313,7 @@ export default function Home() {
         </div>
 
         <footer className="mt-12 text-center">
-          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} techKoodaram Banner Generator</p>          
+          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} techKoodaram Banner Generator</p>
         </footer>
       </div>
     </main>

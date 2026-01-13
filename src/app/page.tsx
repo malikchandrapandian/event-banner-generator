@@ -1,7 +1,7 @@
 // app/page.tsx
 'use client'
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { toPng } from 'html-to-image';
 import { toast } from 'react-hot-toast';
@@ -31,7 +31,7 @@ export default function Home() {
   const bannerRef = useRef<HTMLDivElement>(null);
 
   const platformDimensions = {
-    linkedin: { width: 1200, height: 627, label: 'LinkedIn (1200×627)' },
+    linkedin: { width: 1200, height: 630, label: 'LinkedIn (1200×630)' },
   };
 
   const previewSize = {
@@ -39,14 +39,14 @@ export default function Home() {
   };
 
   const currentTheme = {
-    background: 'bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50',
-    overlay: 'bg-white bg-opacity-60',
-    card: 'bg-white/80',
+    background: 'bg-white',
+    overlay: 'bg-white bg-opacity-0', // removed overlay
+    card: 'bg-white',
     text: 'text-gray-900',
-    textSecondary: 'text-gray-700',
-    badge: 'bg-gradient-to-r from-purple-600 to-blue-600 text-white',
+    textSecondary: 'text-gray-500',
+    badge: 'bg-white text-black font-bold shadow-lg',
     // border: 'border-purple-600', // not used for profile anymore
-    glow: 'shadow-[0_0_30px_rgba(147,51,234,0.3)]'
+    glow: 'shadow-[0_4px_14px_rgba(0,0,0,0.1)]'
   };
 
   const onDropPhoto = (acceptedFiles: File[]) => {
@@ -81,11 +81,11 @@ export default function Home() {
 
 
   const handleDownload = async () => {
-    const element = document.getElementById('preview-image-area');
-    if (!element) return;
+    if (!bannerRef.current) return;
+
 
     try {
-      const dataUrl = await toPng(element, {
+      const dataUrl = await toPng(bannerRef.current, {
         pixelRatio: 2,
       });
 
@@ -93,6 +93,7 @@ export default function Home() {
       link.download = `linkedin-banner-${Date.now()}.png`;
       link.href = dataUrl;
       link.click();
+      toast.success('Downloaded! Feel free to post on LinkedIn or Instagram 🚀');
 
     } catch (error) {
       console.error('Error downloading:', error);
@@ -113,9 +114,10 @@ export default function Home() {
           {/* <p className="text-gray-600 text-lg">Create stunning banners for LinkedIn</p> */}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-1 gap-6 max-w-3xl mx-auto">
           {/* Input Form */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="space-y-6">
+
 
             {/* Name Input */}
             <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-200">
@@ -182,22 +184,40 @@ export default function Home() {
               {/* ... other hidden inputs if strictly needed for form submission, but here purely UI */}
             </div>
 
+            <div className="flex flex-col items-center pt-4 space-y-4">
+              <button
+                onClick={() => {
+                  if (!displayName) {
+                    toast.error('Please enter your name');
+                    return;
+                  }
+                  handleDownload();
+                }}
+                className="w-full md:w-auto px-8 py-3 bg-primary-theme hover:bg-primary-theme/90 text-white font-bold rounded-xl shadow-lg transform transition active:scale-95 text-lg flex items-center justify-center gap-2"
+              >
+                <FiDownload /> Download Banner
+              </button>
+              <p className="text-green-600 font-medium animate-pulse text-sm text-center">
+                Feel free to post this on LinkedIn or Instagram! 🚀
+              </p>
+            </div>
+
           </div>
 
-          {/* Banner Preview */}
-          <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-xl border border-slate-200">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">
-              Preview
-            </h2>
-            <div id="preview-image-area" className="relative flex justify-center items-center min-h-[500px] bg-primary-theme">
-              <div
-                ref={bannerRef}
-                className={`${currentTheme.background} overflow-hidden shadow-2xl relative`}
-                style={{
-                  width: previewSize.linkedin.width,
-                  height: previewSize.linkedin.height
-                }}
-              >
+          {/* Hidden Banner Render Area for Generation */}
+          <div className="fixed top-0 left-0 -z-50 opacity-0 pointer-events-none" style={{ left: '-9999px' }}>
+            <div
+              ref={bannerRef}
+              className={`${currentTheme.background} overflow-hidden shadow-2xl relative flex flex-col`}
+              style={{
+                width: platformDimensions.linkedin.width,
+                height: platformDimensions.linkedin.height
+              }}
+            >
+              {/* Top Brown Bar */}
+              <div className="w-full h-8 bg-[#593c27] flex-shrink-0"></div>
+
+              <div className="relative flex-1 flex flex-col p-12 overflow-hidden">
                 {/* Background Image with Overlay */}
                 {displayPhoto && (
                   <div className="absolute inset-0">
@@ -216,10 +236,10 @@ export default function Home() {
                   backgroundSize: '50px 50px'
                 }}></div>
 
-                {/* LinkedIn Hero Layout */}
-                <div className="relative z-10 w-full h-full flex flex-col p-6 md:p-8 lg:p-12 box-border">
+                {/* LinkedIn Hero Layout - Hardcoded 'md' styles for consistency on mobile */}
+                <div className="relative z-10 w-full h-full flex flex-col box-border">
                   {/* Header: Logo and Event Type - Fixed height */}
-                  <div className="w-full h-12 md:h-16 flex justify-between items-center mb-4 flex-shrink-0">
+                  <div className="w-full h-16 flex justify-between items-center mb-4 flex-shrink-0">
                     {logo && (
                       <img
                         src={logo}
@@ -227,17 +247,17 @@ export default function Home() {
                         style={{ width: '220px', height: 'auto', maxHeight: '23px', objectFit: 'contain', objectPosition: 'left' }}
                       />
                     )}
-                    <div className={`inline-block px-3 py-1 md:px-4 md:py-2 rounded-full bg-secondary text-secondary-foreground font-bold text-xs md:text-sm ${currentTheme.glow} whitespace-nowrap`}>
-                      {eventDetails.eventType.toUpperCase()}
+                    <div className={`inline-block px-8 py-3 rounded-full ${currentTheme.badge} ${currentTheme.glow} tracking-wider text-xl uppercase`}>
+                      {eventDetails.eventType}
                     </div>
                   </div>
 
                   {/* Main Hero Content: Centered Title - Flex grow */}
-                  <div className="w-full flex-1 flex items-center justify-center">
-                    <div className="w-full max-w-4xl mx-auto px-4">
-                      <p className={`text-xs font-semibold ${currentTheme.textSecondary} uppercase tracking-wider mb-0.5`}>I am attending</p>
-                      <h3
-                        className={`text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-4 md:mb-6 ${currentTheme.text} line-clamp-3`}
+                  <div className="w-full flex-1 flex items-center">
+                    <div className="w-full max-w-5xl px-0">
+                      <p className={`text-sm font-semibold ${currentTheme.textSecondary} uppercase tracking-wider mb-2 text-left`}>I am attending</p>
+                      <h1
+                        className={`text-5xl md:text-7xl font-black leading-tight mb-6 ${currentTheme.text} line-clamp-3 text-left`}
                         style={{
                           textShadow: '0 4px 20px rgba(0,0,0,0.1)',
                           display: '-webkit-box',
@@ -247,7 +267,7 @@ export default function Home() {
                         }}
                       >
                         {eventDetails.title}
-                      </h3>
+                      </h1>
 
                     </div>
                   </div>
@@ -261,7 +281,7 @@ export default function Home() {
                         <div
                           className={`w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-white`}
                           style={{
-                            border: '4px solid #926839'
+                            border: '5px solid #593c27'
                           }}
                         >
                           {displayPhoto ? (
@@ -296,26 +316,19 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+
               </div>
-            </div>
+              {/* Bottom Brown Bar */}
+              <div className="w-full h-12 bg-[#593c27] flex-shrink-0"></div>
 
-            {/* Platform-specific actions */}
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <button
-                onClick={handleDownload}
-                className="cursor-pointer flex items-center gap-2 px-6 py-3 bg-primary-theme hover:bg-primary-theme/80 text-white font-semibold rounded-xl transition-colors shadow-lg hover:shadow-primary-theme/30"
-              >
-                <FiDownload className="text-xl" /> Download Banner
-              </button>
             </div>
-
           </div>
         </div>
-
-        <footer className="mt-12 text-center">
-          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} techKoodaram Banner Generator</p>
-        </footer>
       </div>
+
+      <footer className="mt-12 text-center">
+        <p className="text-gray-500 text-sm">© {new Date().getFullYear()} techKoodaram Banner Generator</p>
+      </footer>
     </main>
   );
 }

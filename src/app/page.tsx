@@ -208,119 +208,89 @@ export default function Home() {
           <div className="fixed top-0 left-0 -z-50 opacity-0 pointer-events-none" style={{ left: '-9999px' }}>
             <div
               ref={bannerRef}
-              className={`${currentTheme.background} overflow-hidden shadow-2xl relative flex flex-col`}
+              className="bg-slate-50 overflow-hidden relative flex flex-row items-center"
               style={{
                 width: platformDimensions.linkedin.width,
                 height: platformDimensions.linkedin.height
               }}
             >
-              {/* Top Brown Bar */}
-              <div className="w-full h-8 bg-[#593c27] flex-shrink-0"></div>
+              {/* Decorative Background Elements */}
+              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
+              <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-50 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/4"></div>
 
-              <div className="relative flex-1 flex flex-col p-12 overflow-hidden">
-                {/* Background Image with Overlay */}
-                {displayPhoto && (
-                  <div className="absolute inset-0">
-                    <img
-                      src={displayPhoto}
-                      alt="Background"
-                      className="w-full h-full object-cover opacity-15 blur-sm"
-                    />
-                    <div className={`absolute inset-0 ${currentTheme.overlay}`}></div>
-                  </div>
-                )}
-
-                {/* Grid Pattern Overlay */}
-                <div className="absolute inset-0 opacity-10" style={{
-                  backgroundImage: `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`,
-                  backgroundSize: '50px 50px'
-                }}></div>
-
-                {/* LinkedIn Hero Layout - Hardcoded 'md' styles for consistency on mobile */}
-                <div className="relative z-10 w-full h-full flex flex-col box-border">
-                  {/* Header: Logo and Event Type - Fixed height */}
-                  <div className="w-full h-16 flex justify-between items-center mb-4 flex-shrink-0">
-                    {logo && (
-                      <img
-                        src={logo}
-                        alt="Logo"
-                        style={{ width: '220px', height: 'auto', maxHeight: '23px', objectFit: 'contain', objectPosition: 'left' }}
-                      />
-                    )}
-                    <div className={`inline-block px-8 py-3 rounded-full ${currentTheme.badge} ${currentTheme.glow} tracking-wider text-xl uppercase`}>
-                      {eventDetails.eventType}
+              {/* Left Section: FACE (45%) */}
+              <div className="w-[45%] h-full flex items-center justify-center relative z-10 pl-16">
+                 {/* Circle Container */}
+                <div 
+                  className="relative w-[480px] h-[480px] rounded-full overflow-hidden shadow-2xl bg-white flex-shrink-0"
+                  style={{
+                    border: '12px solid #593c27', 
+                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' 
+                  }}
+                >
+                   {displayPhoto ? (
+                    <img src={displayPhoto} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full bg-slate-200 flex items-center justify-center">
+                      <svg className="w-32 h-32 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
                     </div>
-                  </div>
+                  )}
+                </div>
+              </div>
 
-                  {/* Main Hero Content: Centered Title - Flex grow */}
-                  <div className="w-full flex-1 flex items-center">
-                    <div className="w-full max-w-5xl px-0">
-                      <p className={`text-sm font-semibold ${currentTheme.textSecondary} uppercase tracking-wider mb-2 text-left`}>I am attending</p>
-                      <h1
-                        className={`text-5xl md:text-7xl font-black leading-tight mb-6 ${currentTheme.text} line-clamp-3 text-left`}
-                        style={{
-                          textShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        {eventDetails.title}
-                      </h1>
+              {/* Right Section: CONTENT (55%) */}
+              <div className="flex-1 h-full flex flex-col justify-center items-start pl-12 pr-16 relative z-10">
+                
+                {/* 1. Badge / "I'm Attending" */}
+                <div className="inline-block px-4 py-2 bg-[#593c27] text-white text-sm font-bold uppercase tracking-widest rounded-lg mb-8 shadow-sm">
+                  I'm Attending
+                </div>
 
-                    </div>
-                  </div>
+                {/* 2. Name & Role */}
+                <div className="mb-10">
+                  <h2 className="text-6xl font-black text-slate-900 leading-tight mb-2">
+                    {displayName || "Your Name"}
+                  </h2>
+                  {role && (
+                    <p className="text-3xl text-slate-500 font-medium">{role}</p>
+                  )}
+                </div>
 
-                  {/* Footer: Profile, Details, and Venue - Fixed height */}
-                  <div className={`${currentTheme.card} backdrop-blur-md rounded-xl p-4 border w-full h-24 flex-shrink-0 border-gray-300`}>
-                    <div className="flex justify-between items-center w-full h-full px-2">
+                {/* Divider */}
+                <div className="w-24 h-1.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full mb-10"></div>
 
-                      {/* Left: Profile + Name */}
-                      <div className="flex items-center gap-4">
-                        <div
-                          className={`w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-white`}
-                          style={{
-                            border: '5px solid #593c27'
-                          }}
-                        >
-                          {displayPhoto ? (
-                            <img src={displayPhoto} alt="Profile" className="w-full h-full object-cover" />
-                          ) : (
-                            <div className={`w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center`}>
-                              <svg className={`w-6 h-6 text-gray-400`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <p className={`text-lg font-bold ${currentTheme.text} leading-tight`}>{displayName || "Your Name"}</p>
-                          {role && <p className={`text-sm font-medium ${currentTheme.textSecondary} mt-0.5`}>{role}</p>}
-                        </div>
-                      </div>
-
-                      {/* Right: Details */}
-                      <div className="text-right space-y-0.5">
-                        <div className="flex items-center justify-end gap-2">
-                          <p className={`text-sm font-semibold ${currentTheme.text}`}>{eventDetails.date}</p>
-                        </div>
-                        <div className="flex items-center justify-end gap-2">
-                          <p className={`text-sm font-semibold ${currentTheme.text}`}>{eventDetails.time}</p>
-                        </div>
-                        <div className="flex items-center justify-end gap-2">
-                          <p className={`text-sm font-bold ${currentTheme.text}`}>{eventDetails.venue}</p>
-                        </div>
-                      </div>
-
-                    </div>
+                {/* 3. Event Details */}
+                <div className="space-y-3">
+                  <h3 className="text-4xl font-bold text-slate-800 leading-tight">
+                    {eventDetails.title}
+                  </h3>
+                  
+                  <div className="flex flex-col gap-2 mt-4 text-slate-600 font-medium text-xl">
+                     <div className="flex items-center gap-3">
+                        <svg className="w-6 h-6 text-[#593c27]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <span>{eventDetails.date}</span>
+                     </div>
+                     <div className="flex items-center gap-3">
+                        <svg className="w-6 h-6 text-[#593c27]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <span>{eventDetails.venue}</span>
+                     </div>
                   </div>
                 </div>
 
-              </div>
-              {/* Bottom Brown Bar */}
-              <div className="w-full h-12 bg-[#593c27] flex-shrink-0"></div>
+                {/* Logo at bottom right */}
+                <div className="absolute bottom-10 right-10 opacity-80">
+                   {logo && (
+                      <img
+                        src={logo}
+                        alt="Logo"
+                        style={{ height: '32px', width: 'auto' }}
+                      />
+                   )}
+                </div>
 
+              </div>
             </div>
           </div>
         </div>

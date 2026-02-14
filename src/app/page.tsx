@@ -18,9 +18,9 @@ export default function Home() {
   const [role, setRole] = useState<string>('');
   const [eventDetails, setEventDetails] = useState({
     eventType: 'Meetup',
-    title: 'techKoodaram Meetup #1',
-    date: 'Jan 24, 2026',
-    venue: 'PSR Engineering College, Sivakasi',
+    title: 'techKoodaram Build Day',
+    date: 'Feb 28 2026',
+    venue: 'Vaazhai Incubation, SVCET, Puliyangudi',
     time: '9.30am to 1.00pm'
   });
 

@@ -18,8 +18,8 @@ export default function Home() {
   const [role, setRole] = useState<string>('');
   const [eventDetails, setEventDetails] = useState({
     eventType: 'Meetup',
-    title: 'techKoodaram Build Day',
-    date: 'Feb 28,2026',
+    title: 'Meetup #3',
+    date: 'March 28, 2026',
     venue: 'Vaazhai Incubation, SVCET, Puliyangudi',
     time: '9.30am to 1.00pm'
   });

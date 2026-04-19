@@ -18,9 +18,9 @@ export default function Home() {
   const [role, setRole] = useState<string>('');
   const [eventDetails, setEventDetails] = useState({
     eventType: 'Meetup',
-    title: 'Meetup #3',
-    date: 'March 28, 2026',
-    venue: 'Vaazhai Incubation, SVCET, Puliyangudi',
+    title: 'techKoodaram Builders Days',
+    date: 'April 25, 2026',
+    venue: 'AAA College, Sivakasi',
     time: '9.30am to 1.00pm'
   });
 
@@ -244,7 +244,7 @@ export default function Home() {
               <div className="flex-1 h-full flex flex-col justify-center items-start pl-12 pr-16 relative z-10">
 
                 {/* 1. Badge / "I'm Attending" */}
-                <div className="inline-block px-4 py-2 bg-[#593c27] text-white text-sm font-bold uppercase tracking-widest rounded-lg mb-8 shadow-sm">
+                <div className="inline-block px-4 py-2 bg-[#593c27] text-white text-sm font-bold uppercase tracking-widest rounded-lg mb-8 shadow-sm whitespace-nowrap">
                   I'm Attending
                 </div>
 

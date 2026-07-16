@@ -18,9 +18,9 @@ export default function Home() {
   const [role, setRole] = useState<string>('');
   const [eventDetails, setEventDetails] = useState({
     eventType: 'Meetup',
-    title: 'techKoodaram Builders Days',
-    date: 'April 25, 2026',
-    venue: 'AAA College, Sivakasi',
+    title: 'techKoodaram\'s Tech Talks',
+    date: 'July 25, 2026',
+    venue: 'Ramco Institute of Technology',
     time: '9.30am to 1.00pm'
   });
 
